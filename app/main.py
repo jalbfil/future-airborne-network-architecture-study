@@ -13,11 +13,13 @@ from future_airborne_network_study.reports import generate_all_reports
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 STATIC_DIR = ROOT_DIR / "app" / "static"
+DEFAULT_SCENARIO = "nominal"
+_runtime_scenario = DEFAULT_SCENARIO
 
 app = FastAPI(
     title="Future Airborne Network Architecture Study",
     description="Estudio conceptual y simulador ligero de red de misión aerotransportada.",
-    version="0.1.0",
+    version="0.1.1",
 )
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -56,3 +58,21 @@ def reports() -> dict:
 def playback() -> dict:
     sequence = ["nominal", "uhf_degraded", "satcom_only", "relay_required", "coalition_gateway_limited"]
     return {"sequence": [evaluate_scenario(item).model_dump(mode="json") for item in sequence]}
+
+
+# Compatibility endpoints for stale browser cache or older dashboard scripts.
+@app.get("/api/status")
+def status_compat() -> dict:
+    return evaluate_scenario(_runtime_scenario).model_dump(mode="json")
+
+
+@app.post("/api/scenario/{scenario_id}")
+def scenario_compat(scenario_id: str) -> dict:
+    global _runtime_scenario
+    _runtime_scenario = scenario_id
+    return evaluate(scenario_id)
+
+
+@app.post("/api/tick")
+def tick_compat() -> dict:
+    return evaluate_scenario(_runtime_scenario).model_dump(mode="json")
