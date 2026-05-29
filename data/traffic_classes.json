@@ -1,0 +1,11 @@
+{
+  "traffic_classes": [
+    {"id":"C2_ORDER","label":"Orden C2","priority":1,"required_kbps":12,"critical":true,"policy":"always_send"},
+    {"id":"TRACK_UPDATE","label":"Actualización de tracks","priority":2,"required_kbps":80,"critical":true,"policy":"always_send"},
+    {"id":"POSITION_UPDATE","label":"Posición propia","priority":2,"required_kbps":50,"critical":true,"policy":"always_send"},
+    {"id":"SENSOR_METADATA","label":"Metadatos ISR","priority":3,"required_kbps":120,"critical":false,"policy":"compress_if_degraded","compression_ratio":0.5},
+    {"id":"TELEMETRY","label":"Telemetría","priority":4,"required_kbps":160,"critical":false,"policy":"reduce_if_degraded","reduction_ratio":0.5},
+    {"id":"VIDEO_STREAM","label":"Vídeo ISR","priority":6,"required_kbps":1200,"critical":false,"policy":"drop_if_constrained"},
+    {"id":"BULK_LOGS","label":"Logs / datos no críticos","priority":7,"required_kbps":400,"critical":false,"policy":"delay_if_constrained"}
+  ]
+}
