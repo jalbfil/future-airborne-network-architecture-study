@@ -33,36 +33,53 @@ def _critical_minimum(traffic: list[TrafficClass]) -> float:
     return sum(item.required_kbps for item in traffic if item.critical)
 
 
+def _decision(
+    item: TrafficClass,
+    effective_kbps: float,
+    action: FlowAction,
+    reason: str,
+) -> FlowDecision:
+    return FlowDecision(
+        traffic_id=item.id,
+        label=item.label,
+        priority=item.priority,
+        requested_kbps=item.required_kbps,
+        effective_kbps=effective_kbps,
+        action=action,
+        reason=reason,
+    )
+
+
 def _make_decision(item: TrafficClass, remaining: float, constrained: bool, degraded: bool) -> tuple[FlowDecision, float]:
     requested = item.required_kbps
 
     if item.critical:
         if remaining >= requested:
-            return FlowDecision(item_id if False else item.id, item.label, item.priority, requested, requested, FlowAction.ALLOW, "Flujo critico permitido."), remaining - requested
-        return FlowDecision(item.id, item.label, item.priority, requested, 0, FlowAction.DROP, "No hay capacidad suficiente ni para el minimo critico."), remaining
+            return _decision(item, requested, FlowAction.ALLOW, "Flujo crítico permitido."), remaining - requested
+        return _decision(item, 0, FlowAction.DROP, "No hay capacidad suficiente ni para el mínimo crítico."), remaining
 
     if constrained:
-        action = FlowAction.DELAY if item.policy == "delay_if_constrained" else FlowAction.DROP
-        reason = "Trafico no critico diferido en modo restringido." if action == FlowAction.DELAY else "Trafico no critico bloqueado para preservar flujos esenciales."
-        return FlowDecision(item.id, item.label, item.priority, requested, 0, action, reason), remaining
+        if item.policy == "delay_if_constrained":
+            return _decision(item, 0, FlowAction.DELAY, "Tráfico no crítico diferido en modo restringido."), remaining
+        return _decision(item, 0, FlowAction.DROP, "Tráfico no crítico bloqueado para preservar flujos esenciales."), remaining
 
     if degraded and item.policy == "compress_if_degraded":
         effective = requested * (item.compression_ratio or 0.5)
         if remaining >= effective:
-            return FlowDecision(item.id, item.label, item.priority, requested, effective, FlowAction.COMPRESS, "Flujo comprimido por degradacion de red."), remaining - effective
+            return _decision(item, effective, FlowAction.COMPRESS, "Flujo comprimido por degradación de red."), remaining - effective
 
     if degraded and item.policy == "reduce_if_degraded":
         effective = requested * (item.reduction_ratio or 0.5)
         if remaining >= effective:
-            return FlowDecision(item.id, item.label, item.priority, requested, effective, FlowAction.REDUCE, "Flujo reducido en frecuencia por degradacion de red."), remaining - effective
+            return _decision(item, effective, FlowAction.REDUCE, "Flujo reducido en frecuencia por degradación de red."), remaining - effective
 
     if remaining >= requested:
-        return FlowDecision(item.id, item.label, item.priority, requested, requested, FlowAction.ALLOW, "Capacidad suficiente para el flujo."), remaining - requested
+        return _decision(item, requested, FlowAction.ALLOW, "Capacidad suficiente para el flujo."), remaining - requested
 
     if item.policy == "delay_if_constrained":
-        return FlowDecision(item.id, item.label, item.priority, requested, 0, FlowAction.DELAY, "No cabe en la ventana actual; queda diferido."), remaining
+        return _decision(item, 0, FlowAction.DELAY, "No cabe en la ventana actual; queda diferido."), remaining
 
-    return FlowDecision(item.id, item.label, item.priority, requested, 0, FlowAction.DROP, "Capacidad insuficiente para flujo no critico."), remaining
+    return _decision(item, 0, FlowAction.DROP, "Capacidad insuficiente para flujo no crítico."), remaining
 
 
 def evaluate_scenario(scenario_id: str) -> MissionEvaluation:
@@ -130,9 +147,9 @@ def evaluate_scenario(scenario_id: str) -> MissionEvaluation:
 
 def _recommendation(state: MissionState) -> str:
     if state == MissionState.MISSION_READY:
-        return "La arquitectura soporta los flujos principales. Mantener supervision y redundancia activa."
+        return "La arquitectura soporta los flujos principales. Mantener supervisión y redundancia activa."
     if state == MissionState.MISSION_DEGRADED:
-        return "La mision continua con degradacion. Mantener C2/tracks, comprimir metadatos y reducir telemetria."
+        return "La misión continúa con degradación. Mantener C2/tracks, comprimir metadatos y reducir telemetría."
     if state == MissionState.MISSION_CONSTRAINED:
-        return "Modo restringido. Preservar C2, posicion y tracks. Bloquear video y diferir datos no criticos."
-    return "Estado critico. El minimo de mision no esta garantizado. Requiere restaurar enlace, relay o capacidad adicional."
+        return "Modo restringido. Preservar C2, posición y tracks. Bloquear vídeo y diferir datos no críticos."
+    return "Estado crítico. El mínimo de misión no está garantizado. Requiere restaurar enlace, relay o capacidad adicional."
