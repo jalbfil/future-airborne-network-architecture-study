@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {"id":"BASE","label":"BASE","role":"Puesto de mando terrestre","domain":"ground"},
+    {"id":"GROUND-GW","label":"Ground Gateway","role":"Pasarela terrestre de misión","domain":"ground"},
+    {"id":"UAV-01","label":"UAV-01","role":"Nodo no tripulado de apoyo / relay","domain":"air"},
+    {"id":"RELAY-01","label":"RELAY-01","role":"Nodo relay aerotransportado","domain":"air"},
+    {"id":"AIR-01","label":"AIR-01","role":"Plataforma aérea principal","domain":"air"},
+    {"id":"AIR-02","label":"AIR-02","role":"Plataforma aérea secundaria","domain":"air"},
+    {"id":"MISSION-EDGE","label":"Mission Edge","role":"Nodo edge / nube de misión","domain":"edge"},
+    {"id":"SATCOM-GW","label":"SATCOM Gateway","role":"Pasarela SATCOM de respaldo","domain":"space"}
+  ]
+}
