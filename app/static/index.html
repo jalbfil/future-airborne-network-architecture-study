@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Future Airborne Network Architecture Study</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Estudio conceptual · Red de misión aerotransportada</p>
+      <h1>Future Airborne Network Architecture Study</h1>
+      <p class="subtitle">Sistemas de sistemas · servicios de misión · priorización de tráfico · continuidad bajo degradación</p>
+    </header>
+
+    <section class="controls" id="scenario-controls"></section>
+
+    <section class="grid">
+      <article class="panel map-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Arquitectura de misión</h2>
+            <p>Vista conceptual de nodos, enlaces y servicios</p>
+          </div>
+          <strong id="mission-state">---</strong>
+        </div>
+
+        <div class="topology">
+          <svg viewBox="0 0 1100 640" class="network-svg" aria-label="Arquitectura de red de misión">
+            <line id="link-BASE-GW" x1="130" y1="340" x2="300" y2="340" />
+            <line id="link-GW-UAV" x1="300" y1="340" x2="520" y2="260" />
+            <line id="link-UAV-AIR01" x1="520" y1="260" x2="820" y2="250" />
+            <line id="link-AIR01-AIR02" x1="820" y1="250" x2="910" y2="420" />
+            <line id="link-UAV-RELAY" x1="520" y1="260" x2="640" y2="430" />
+            <line id="link-RELAY-AIR01" x1="640" y1="430" x2="820" y2="250" />
+            <path id="link-SATCOM" d="M130,300 C300,80 780,80 920,220" />
+            <line id="link-COALITION-GW" x1="300" y1="340" x2="300" y2="120" />
+
+            <g class="node ground" transform="translate(130 340)"><circle r="48"/><text y="6">BASE</text></g>
+            <g class="node ground" transform="translate(300 340)"><circle r="48"/><text y="6">GW</text></g>
+            <g class="node edge" transform="translate(300 120)"><circle r="48"/><text y="6">EDGE</text></g>
+            <g class="node air" transform="translate(520 260)"><circle r="48"/><text y="6">UAV-01</text></g>
+            <g class="node air" transform="translate(640 430)"><circle r="48"/><text y="6">RELAY</text></g>
+            <g class="node air" transform="translate(820 250)"><circle r="48"/><text y="6">AIR-01</text></g>
+            <g class="node air" transform="translate(910 420)"><circle r="48"/><text y="6">AIR-02</text></g>
+            <g class="node space" transform="translate(920 170)"><circle r="48"/><text y="6">SATCOM</text></g>
+          </svg>
+        </div>
+      </article>
+
+      <aside class="side">
+        <article class="panel">
+          <h3>Resumen de misión</h3>
+          <div id="summary" class="summary"></div>
+        </article>
+        <article class="panel">
+          <h3>Flujos de tráfico</h3>
+          <div id="flows" class="flows"></div>
+        </article>
+      </aside>
+    </section>
+
+    <section class="panel">
+      <h3>Decisiones de política</h3>
+      <div id="decisions" class="decision-table"></div>
+    </section>
+  </main>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>
