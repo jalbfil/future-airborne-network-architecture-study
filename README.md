@@ -3,7 +3,7 @@
 Estudio conceptual y simulador ligero sobre arquitecturas futuras de red de misión aerotransportada.
 
 <p align="center">
-  <img src="assets/architecture-preview.svg" alt="Vista conceptual de arquitectura futura de red de misión aerotransportada" width="100%">
+  <img src="assets/dashboard-satcom-only.png" alt="Dashboard del estudio mostrando escenario Solo SATCOM y continuidad de misión restringida" width="100%">
 </p>
 
 Este repositorio está escrito en castellano y combina:
@@ -111,17 +111,29 @@ El simulador clasifica el estado de la misión como:
 
 El simulador incluye cinco escenarios:
 
-| Escenario | Descripción |
-|---|---|
-| `nominal` | Todos los enlaces principales disponibles |
-| `uhf_degraded` | Enlace UHF degradado, se comprimen/reducen flujos |
-| `satcom_only` | Solo queda SATCOM, sobreviven flujos críticos |
-| `relay_required` | El enlace directo no es viable, se usa relay |
-| `coalition_gateway_limited` | Pasarela federada limitada, se restringen flujos |
+| Escenario | Descripción | Estado esperado |
+|---|---|---|
+| `nominal` | Todos los enlaces principales disponibles | `MISSION_READY` |
+| `uhf_degraded` | Enlace UHF degradado, se comprimen/reducen flujos | `MISSION_DEGRADED` |
+| `satcom_only` | Solo queda SATCOM, sobreviven flujos críticos | `MISSION_CONSTRAINED` |
+| `relay_required` | El enlace directo no es viable, se usa relay | `MISSION_DEGRADED` |
+| `coalition_gateway_limited` | Pasarela federada limitada, se restringen flujos | `MISSION_CONSTRAINED` |
 
 ---
 
-## 7. Arquitectura del proyecto
+## 7. Dashboard preview
+
+| Escenario | Captura | Lectura técnica |
+|---|---|---|
+| `nominal` | [`dashboard-nominal.png`](assets/dashboard-nominal.png) | La arquitectura soporta los flujos principales |
+| `uhf_degraded` | [`dashboard-uhf-degraded.png`](assets/dashboard-uhf-degraded.png) | La misión continúa con degradación controlada |
+| `satcom_only` | [`dashboard-satcom-only.png`](assets/dashboard-satcom-only.png) | Solo sobreviven flujos esenciales por SATCOM |
+| `relay_required` | [`dashboard-relay-required.png`](assets/dashboard-relay-required.png) | El relay recupera continuidad cuando el enlace directo no es viable |
+| `coalition_gateway_limited` | [`dashboard-coalition-gateway-limited.png`](assets/dashboard-coalition-gateway-limited.png) | La pasarela federada restringe qué datos se intercambian |
+
+---
+
+## 8. Arquitectura del proyecto
 
 ```text
 Datos JSON
@@ -139,7 +151,7 @@ FastAPI + Dashboard
 
 ---
 
-## 8. Instalación
+## 9. Instalación
 
 ```bash
 python -m venv .venv
@@ -165,15 +177,23 @@ pip install -e ".[dev]"
 
 ---
 
-## 9. Ejecutar tests
+## 10. Ejecutar tests
 
 ```bash
 pytest -q
 ```
 
+Validado localmente:
+
+```text
+6 passed, 1 warning
+```
+
+Ver validación: [`docs/local-mvp-validation.md`](docs/local-mvp-validation.md)
+
 ---
 
-## 10. Generar reportes
+## 11. Generar reportes
 
 ```bash
 python scripts/generate_reports.py
@@ -185,9 +205,19 @@ Los reportes se guardan en:
 reports/
 ```
 
+Reportes generados:
+
+```text
+nominal-report.json
+uhf_degraded-report.json
+satcom_only-report.json
+relay_required-report.json
+coalition_gateway_limited-report.json
+```
+
 ---
 
-## 11. Ejecutar dashboard
+## 12. Ejecutar dashboard
 
 ```bash
 uvicorn app.main:app --reload
@@ -196,12 +226,12 @@ uvicorn app.main:app --reload
 Abrir:
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8000/?v=2
 ```
 
 ---
 
-## 12. Endpoints API
+## 13. Endpoints API
 
 ```text
 GET  /api/scenarios
@@ -218,7 +248,7 @@ curl http://127.0.0.1:8000/api/evaluate/satcom_only
 
 ---
 
-## 13. Estructura del repositorio
+## 14. Estructura del repositorio
 
 ```text
 future-airborne-network-architecture-study/
@@ -237,7 +267,7 @@ future-airborne-network-architecture-study/
 
 ---
 
-## 14. Valor profesional
+## 15. Valor profesional
 
 Este proyecto demuestra:
 
