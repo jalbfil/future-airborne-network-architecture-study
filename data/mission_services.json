@@ -1,0 +1,11 @@
+{
+  "mission_services": [
+    {"id":"C2_MESSAGING","label":"Mensajería C2","depends_on":["C2_ORDER"]},
+    {"id":"BLUE_FORCE_TRACKING","label":"Seguimiento de fuerzas propias","depends_on":["POSITION_UPDATE"]},
+    {"id":"TRACK_CORRELATION","label":"Correlación de tracks","depends_on":["TRACK_UPDATE"]},
+    {"id":"ISR_METADATA_EXCHANGE","label":"Intercambio de metadatos ISR","depends_on":["SENSOR_METADATA"]},
+    {"id":"TELEMETRY_COLLECTION","label":"Telemetría","depends_on":["TELEMETRY"]},
+    {"id":"VIDEO_RELAY","label":"Relay de vídeo","depends_on":["VIDEO_STREAM"]},
+    {"id":"LOG_SYNC","label":"Sincronización de logs","depends_on":["BULK_LOGS"]}
+  ]
+}
