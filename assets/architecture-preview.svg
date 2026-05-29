@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#07111f"/>
+  <text x="70" y="95" fill="#edf5ff" font-family="Arial" font-size="54" font-weight="700">Future Airborne Network Architecture Study</text>
+  <text x="72" y="142" fill="#9fb3cc" font-family="Arial" font-size="24">Sistema de sistemas · red de misión · continuidad bajo degradación</text>
+  <rect x="70" y="200" width="1460" height="600" rx="28" fill="#0d1b2e" stroke="#29405f"/>
+  <g stroke="#31d07f" stroke-width="10" stroke-linecap="round">
+    <line x1="180" y1="520" x2="360" y2="520"/>
+    <line x1="360" y1="520" x2="650" y2="380"/>
+    <line x1="650" y1="380" x2="1050" y2="360"/>
+    <line x1="1050" y1="360" x2="1220" y2="560"/>
+  </g>
+  <g stroke="#f0b83b" stroke-width="8" stroke-linecap="round">
+    <line x1="650" y1="380" x2="820" y2="570"/>
+    <line x1="820" y1="570" x2="1050" y2="360"/>
+  </g>
+  <path d="M180,450 C420,160 1020,160 1240,290" fill="none" stroke="#35a7ff" stroke-width="8" stroke-dasharray="22 14"/>
+  <g fill="#10243d" stroke="#6a829f" stroke-width="5">
+    <circle cx="180" cy="520" r="64"/><circle cx="360" cy="520" r="64"/><circle cx="650" cy="380" r="64"/>
+    <circle cx="820" cy="570" r="64"/><circle cx="1050" cy="360" r="64"/><circle cx="1220" cy="560" r="64"/>
+    <circle cx="1240" cy="245" r="64"/><circle cx="360" cy="270" r="64"/>
+  </g>
+  <g fill="#edf5ff" font-family="Arial" font-size="28" font-weight="700" text-anchor="middle">
+    <text x="180" y="530">BASE</text><text x="360" y="530">GW</text><text x="650" y="390">UAV-01</text>
+    <text x="820" y="580">RELAY</text><text x="1050" y="370">AIR-01</text><text x="1220" y="570">AIR-02</text>
+    <text x="1240" y="255">SATCOM</text><text x="360" y="280">EDGE</text>
+  </g>
+  <rect x="1020" y="650" width="420" height="86" rx="18" fill="#10243d" stroke="#31d07f"/>
+  <text x="1045" y="687" fill="#9fb3cc" font-family="Arial" font-size="18" font-weight="700">MISSION STATE</text>
+  <text x="1045" y="722" fill="#31d07f" font-family="Arial" font-size="32" font-weight="700">MISSION_READY</text>
+</svg>
